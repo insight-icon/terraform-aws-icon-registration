@@ -7,7 +7,7 @@ locals {
   nid    = var.network_name == "testnet" ? 80 : var.network_name == "mainnet" ? 1 : ""
   url    = var.network_name == "testnet" ? "https://zicon.net.solidwallet.io" : "https://ctz.solidwallet.io/api/v3"
 
-  ip = var.ip == null ? aws_eip.this.*.public_ip[0] : var.ip
+  ip = var.ip == null ? join("", aws_eip.this.*.public_ip) : var.ip
 
   tags = merge(var.tags, { "Name" = "${var.network_name}-ip" })
 }
