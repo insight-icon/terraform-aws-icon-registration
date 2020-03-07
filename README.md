@@ -4,17 +4,18 @@
 
 This module helps with registering a node on the ICON Blockchain. It does three main things.
 
-- Creates an elastic IP that will be your main IP that your node will use to run
-- Puts the necessary details.json file in a bucket publicly accessible
-- Outputs the commands you need to run in preptools
+- Creates an elastic IP that will be your main IP that your node will use to run and applies a number of tags on the
+resource so it can be queried to be attached to instances later
+- Puts the necessary details.json file in a bucket publicly accessible along with logos
+- Runs `preptools` to register the node or update the info
 
 **Make sure you have 2000 ICX registration fee in your wallet for mainnet and you have testnet tokens for testnet**
-
-Future versions will run preptools automatically and will be idempotent (ie can run as many times as you want without breaking things).
 
 ## Using this module
 
 Fill out the appropriate values in `terraform.tfvars.example` then move to `terraform.tfvars` if running directly.
+
+Really this module should be used from a scaffolding like `terragrunt` like in (terragrunt-aws-icon)[https://github.com/insight-infrastructure/terragrunt-aws-icon]
 
 ## Terraform Versions
 
@@ -22,12 +23,46 @@ For Terraform v0.12.0+
 
 ## Usage
 
-```
+```hcl
 module "this" {
     source = "github.com/robc-io/terraform-aws-icon-registration"
+    network_name = "testnet"
 
+    // Path needs to be filled in otherwise registration doesn't work
+    //  keystore_path = "/Users/.../Documents/keystore"
+
+    organization_name    = "Insight-CI"
+    organization_country = "USA"
+    # This needs to be three letter country code per https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
+    organization_email = "hunter@gmail.com"
+    # Needs to be real email
+    organization_city = "A city"
+    # No qualifiers
+    organization_website = "https://google.com"
+    # Needs to begin in https / http - can be google...
+
+    // All the logos are complete paths to the image on your local drive
+    logo_256 = "/Users/.../logo_256"
+    logo_1024 = "/Users/.../logo_1024"
+    logo_svg = "/Users/.../logo_svg"
+
+    // If you have already have an IP, you can enter it here / uncomment and a new IP will not be provisioned with the
+    // existing IP being brought
+    //  ip = "1.2.3.4"
+    // ------------------Details - Doesn't really matter
+    server_type = "cloud"
+    region      = "us-east-1"
+
+    keystore_password = var.keystore_password
+    keystore_path     = var.keystore_path
+
+    logo_256  = var.logo_256
+    logo_1024 = var.logo_1024
+
+    logo_svg = var.logo_svg
 }
 ```
+
 ## Examples
 
 - [defaults](https://github.com/robc-io/terraform-aws-icon-registration/tree/master/examples/defaults)
