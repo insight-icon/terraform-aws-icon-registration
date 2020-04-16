@@ -25,7 +25,7 @@ For Terraform v0.12.0+
 
 ```hcl
 module "this" {
-    source = "github.com/robc-io/terraform-aws-icon-registration"
+    source = "github.com/insight-infrastructure/terraform-aws-icon-registration.git?ref=v0.1.0"
     network_name = "testnet"
 
     // Path needs to be filled in otherwise registration doesn't work

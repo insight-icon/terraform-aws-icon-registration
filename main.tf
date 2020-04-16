@@ -83,9 +83,9 @@ resource aws_s3_bucket_object "logo_svg" {
 resource template_file "details" {
   template = file("${path.module}/templates/details.json")
   vars = {
-    logo_256  = "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_256)}"
-    logo_1024 = "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_1024)}"
-    logo_svg  = "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_svg)}"
+    logo_256  = var.logo_256 == "" ? "" : "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_256)}"
+    logo_1024 = var.logo_1024 == "" ? "" : "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_1024)}"
+    logo_svg  = var.logo_svg == "" ? "" : "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_svg)}"
 
     steemit  = var.steemit
     twitter  = var.twitter
@@ -157,7 +157,7 @@ resource "aws_s3_bucket_object" "details" {
 resource null_resource "preptools" {
   provisioner "local-exec" {
     command = <<-EOF
-python ${path.module}/scripts/preptools_wrapper.py prep_reg ${var.network_name} ${var.keystore_path} ${path.module}/registerPRep.json ${var.keystore_password}
+python ${path.module}/scripts/preptools_wrapper.py ${var.network_name} ${var.keystore_path} ${path.module}/registerPRep.json ${var.keystore_password}
 EOF
   }
   triggers = {

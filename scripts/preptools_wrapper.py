@@ -1,5 +1,5 @@
+import sys
 import requests
-import fire
 import json
 import codecs
 import subprocess
@@ -58,6 +58,7 @@ class PRepChecker(object):
         return exists
 
     def prep_reg(self, network_name, keystore, register_json, password):
+
         address = json.load(codecs.open(keystore, 'r', 'utf-8-sig'))['address']
         print(address)
         with open(register_json, 'r') as f:
@@ -75,4 +76,9 @@ class PRepChecker(object):
 
 
 if __name__ == "__main__":
-    fire.Fire(PRepChecker(), name='checker')
+    network_name = sys.argv[1]
+    keystore_path = sys.argv[2]
+    register_json = sys.argv[3]
+    keystore_password = sys.argv[4]
+    p = PRepChecker()
+    p.prep_reg(network_name, keystore_path, register_json, keystore_password)

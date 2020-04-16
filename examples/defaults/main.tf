@@ -1,3 +1,31 @@
+
+variable "logo_256" {
+  default = ""
+}
+
+variable "logo_1024" {
+  default = ""
+}
+
+variable "logo_svg" {
+  default = ""
+}
+
+variable "keystore_path" {
+  default = ""
+}
+
+variable "keystore_password" {
+  default = "testing1."
+}
+
+locals {
+  keystore_path = var.keystore_path == "" ? "${path.cwd}/../../test/fixtures/keystore/testnet" : var.keystore_path
+  logo_256      = var.logo_256 == "" ? "${path.cwd}/../../test/fixtures/logos/insight.png" : var.logo_256
+  logo_1024     = var.logo_1024 == "" ? "${path.cwd}/../../test/fixtures/logos/insight.png" : var.logo_1024
+  logo_svg      = var.logo_svg == "" ? "${path.cwd}/../../test/fixtures/logos/insight.png" : var.logo_svg
+}
+
 module "defaults" {
   source = "../.."
 
@@ -29,17 +57,10 @@ module "defaults" {
   region      = "us-east-1"
 
   keystore_password = var.keystore_password
-  keystore_path     = var.keystore_path
+  keystore_path     = local.keystore_path
 
-  logo_256  = var.logo_256
-  logo_1024 = var.logo_1024
+  logo_256  = local.logo_256
+  logo_1024 = local.logo_1024
 
-  logo_svg = var.logo_svg
+  logo_svg = local.logo_svg
 }
-
-variable "logo_256" {}
-variable "logo_1024" {}
-variable "logo_svg" {}
-
-variable "keystore_path" {}
-variable "keystore_password" {}
