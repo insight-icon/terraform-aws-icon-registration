@@ -1,5 +1,5 @@
 resource "aws_eip" "this" {
-  count = var.ip == null && local.aws_enabled ? 1 : 0
+  count = local.cloud_provider == "aws" ? 1 : 0
   vpc   = true
   tags  = local.tags
 
@@ -8,8 +8,8 @@ resource "aws_eip" "this" {
   }
 }
 
-resource "aws_s3_bucket" "bucket" {
-  count = local.aws_enabled ? 1 : 0
+resource "aws_s3_bucket" "this" {
+  count = local.static_content_provider == "aws" ? 1 : 0
 
   bucket = local.bucket
   acl    = "public-read"
@@ -41,48 +41,24 @@ EOF
 # Images
 ########
 resource "aws_s3_bucket_object" "logo_256" {
-  count  = var.logo_256 != "" && local.aws_enabled ? 1 : 0
-  bucket = join("", aws_s3_bucket.bucket.*.bucket)
+  count  = var.logo_256 != "" && local.static_content_provider == "aws" ? 1 : 0
+  bucket = join("", aws_s3_bucket.this.*.bucket)
   key    = basename(var.logo_256)
   source = var.logo_256
 }
 
 resource "aws_s3_bucket_object" "logo_1024" {
-  count  = var.logo_1024 != "" && local.aws_enabled ? 1 : 0
-  bucket = join("", aws_s3_bucket.bucket.*.bucket)
+  count  = var.logo_1024 != "" && local.static_content_provider == "aws" ? 1 : 0
+  bucket = join("", aws_s3_bucket.this.*.bucket)
   key    = basename(var.logo_1024)
   source = var.logo_1024
 }
 
 resource aws_s3_bucket_object "logo_svg" {
-  count  = var.logo_svg != "" && local.aws_enabled ? 1 : 0
-  bucket = join("", aws_s3_bucket.bucket.*.bucket)
+  count  = var.logo_svg != "" && local.static_content_provider == "aws" ? 1 : 0
+  bucket = join("", aws_s3_bucket.this.*.bucket)
   key    = basename(var.logo_svg)
   source = var.logo_svg
 }
 
 
-#################
-# Persist objects
-#################
-resource "local_file" "preptools_config" {
-  count = local.aws_enabled ? 1 : 0
-
-  filename = "${path.module}/preptools_config.json"
-  content  = template_file.preptools_config.rendered
-}
-
-resource "local_file" "registerPRep" {
-  count = local.aws_enabled ? 1 : 0
-
-  filename = "${path.module}/registerPRep.json"
-  content  = template_file.registration.rendered
-}
-
-resource "aws_s3_bucket_object" "details" {
-  count = local.aws_enabled ? 1 : 0
-
-  bucket  = join("", aws_s3_bucket.bucket.*.bucket)
-  key     = "details.json"
-  content = template_file.details.rendered
-}

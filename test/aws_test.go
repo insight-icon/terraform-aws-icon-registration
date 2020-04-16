@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-func TestTerraformDefaults(t *testing.T) {
+func TestAws(t *testing.T) {
 	t.Parallel()
 
 	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/defaults")

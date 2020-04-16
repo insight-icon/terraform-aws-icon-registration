@@ -1,5 +1,26 @@
-variable "bucket" {
-  description = "The name of the bucket to make"
+variable "static_content_provider" {
+  description = "The provider "
+  type        = string
+  default     = ""
+}
+
+########
+# Label
+########
+variable "environment" {
+  description = "The environment"
+  type        = string
+  default     = ""
+}
+
+variable "namespace" {
+  description = "The namespace to deploy into"
+  type        = string
+  default     = ""
+}
+
+variable "stage" {
+  description = "The stage of the deployment"
   type        = string
   default     = ""
 }
@@ -9,6 +30,21 @@ variable "network_name" {
   type        = string
   default     = "mainnet"
 }
+
+variable "owner" {
+  description = "Owner of the infrastructure"
+  type        = string
+  default     = ""
+}
+
+
+
+variable "bucket" {
+  description = "The name of the bucket to make"
+  type        = string
+  default     = ""
+}
+
 
 variable "tags" {
   description = "Additional tags to include"
@@ -112,14 +148,14 @@ variable "server_type" {
   default     = "cloud"
 }
 
-variable "region" {
-  description = "The region you are running your server - no constraints"
-  type        = string
-  default     = ""
-}
+//variable "region" {
+//  description = "The region you are running your server - no constraints"
+//  type        = string
+//  default     = ""
+//}
 
-variable "ip" {
-  description = "Optional if you are registering an IP from a different network"
+variable "public_ip" {
+  description = "Optional if you are registering an IP from a different network - only creates details content, leave blank and insert cloud provdier to create ip"
   type        = string
   default     = null
 }

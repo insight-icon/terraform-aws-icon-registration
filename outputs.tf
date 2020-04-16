@@ -1,5 +1,5 @@
 output "details_endpoint" {
-  value = "http://${local.website_endpoint}/details.json"
+  value = "http://${local.registration_details_endpoint}/details.json"
 }
 
 output "details_values" {
@@ -10,12 +10,16 @@ output "registration_json" {
   value = template_file.registration.rendered
 }
 
-output "ip" {
-  value = var.ip == null ? join("", aws_eip.this.*.public_ip) : var.ip
-}
+//output "ip" {
+//  value = var.ip == null ? join("", aws_eip.this.*.public_ip) : var.ip
+//}
+//
+//output "public_ip" {
+//  value = var.ip == null ? join("", aws_eip.this.*.public_ip) : var.ip
+//}
 
 output "public_ip" {
-  value = var.ip == null ? join("", aws_eip.this.*.public_ip) : var.ip
+  value = local.public_ip
 }
 
 output "network_name" {
@@ -33,8 +37,8 @@ preptools registerPRep \
 %{if var.organization_city != ""}--city "${var.organization_city}"%{endif} \
 %{if var.organization_email != ""}--email "${var.organization_email}"%{endif} \
 %{if var.organization_website != ""}--website "${var.organization_website}"%{endif} \
---details "http://${local.website_endpoint}/details.json" \
---p2p-endpoint "${local.ip}:7100"
+--details "http://${local.registration_details_endpoint}/details.json" \
+--p2p-endpoint "${local.public_ip}:7100"
 EOF
 }
 
@@ -49,7 +53,7 @@ preptools setPRep \
 %{if var.organization_city != ""}--city "${var.organization_city}"%{endif} \
 %{if var.organization_email != ""}--email "${var.organization_email}"%{endif} \
 %{if var.organization_website != ""}--website "${var.organization_website}"%{endif} \
---details "http://${local.website_endpoint}/details.json" \
---p2p-endpoint "${local.ip}:7100"
+--details "http://${local.registration_details_endpoint}/details.json" \
+--p2p-endpoint "${local.public_ip}:7100"
 EOF
 }
