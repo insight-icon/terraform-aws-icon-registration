@@ -86,6 +86,7 @@ No issue is creating limit on this module.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
 | bucket | The name of the bucket to make | `string` | `""` | no |
+| cloud\_provider | The cloud procider you are running on | `string` | `"aws"` | no |
 | facebook | Link to social media account - https://... | `string` | `""` | no |
 | github | Link to social media account - https://... | `string` | `""` | no |
 | ip | Optional if you are registering an IP from a different network | `string` | n/a | yes |

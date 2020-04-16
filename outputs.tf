@@ -1,5 +1,5 @@
 output "details_endpoint" {
-  value = "http://${aws_s3_bucket.bucket.website_endpoint}/details.json"
+  value = "http://${local.website_endpoint}/details.json"
 }
 
 output "details_values" {
@@ -33,7 +33,7 @@ preptools registerPRep \
 %{if var.organization_city != ""}--city "${var.organization_city}"%{endif} \
 %{if var.organization_email != ""}--email "${var.organization_email}"%{endif} \
 %{if var.organization_website != ""}--website "${var.organization_website}"%{endif} \
---details "http://${aws_s3_bucket.bucket.website_endpoint}/details.json" \
+--details "http://${local.website_endpoint}/details.json" \
 --p2p-endpoint "${local.ip}:7100"
 EOF
 }
@@ -49,7 +49,7 @@ preptools setPRep \
 %{if var.organization_city != ""}--city "${var.organization_city}"%{endif} \
 %{if var.organization_email != ""}--email "${var.organization_email}"%{endif} \
 %{if var.organization_website != ""}--website "${var.organization_website}"%{endif} \
---details "http://${aws_s3_bucket.bucket.website_endpoint}/details.json" \
+--details "http://${local.website_endpoint}/details.json" \
 --p2p-endpoint "${local.ip}:7100"
 EOF
 }

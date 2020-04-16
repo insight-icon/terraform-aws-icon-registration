@@ -1,80 +1,8 @@
 data "aws_caller_identity" "this" {}
 data "aws_region" "this" {}
 
-locals {
-  region = var.region == "" ? data.aws_region.this.name : var.region
-  bucket = var.bucket == "" ? "prep-registration-${random_pet.this.id}" : var.bucket
-  nid    = var.network_name == "testnet" ? 80 : var.network_name == "mainnet" ? 1 : ""
-  url    = var.network_name == "testnet" ? "https://zicon.net.solidwallet.io" : "https://ctz.solidwallet.io/api/v3"
-
-  ip = var.ip == null ? join("", aws_eip.this.*.public_ip) : var.ip
-
-  tags = merge(var.tags, { "Name" = "${var.network_name}-ip" })
-}
-
-resource "aws_eip" "this" {
-  count = var.ip == null ? 1 : 0
-  vpc   = true
-  tags  = local.tags
-
-  lifecycle {
-    prevent_destroy = false
-  }
-}
-
 resource "random_pet" "this" {
   length = 2
-}
-
-resource "aws_s3_bucket" "bucket" {
-  bucket = local.bucket
-  acl    = "public-read"
-
-  website {
-    index_document = "index.html"
-  }
-
-  policy = <<EOF
-{
-  "Id": "bucket_policy_site",
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "bucket_policy_site_main",
-      "Action": [
-        "s3:GetObject"
-      ],
-      "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${local.bucket}/*",
-      "Principal": "*"
-    }
-  ]
-}
-EOF
-}
-
-########
-# Images
-########
-resource "aws_s3_bucket_object" "logo_256" {
-  count  = var.logo_256 == "" ? 0 : 1
-  bucket = aws_s3_bucket.bucket.bucket
-  key    = basename(var.logo_256)
-  source = var.logo_256
-}
-
-resource "aws_s3_bucket_object" "logo_1024" {
-  count  = var.logo_1024 == "" ? 0 : 1
-  bucket = aws_s3_bucket.bucket.bucket
-  key    = basename(var.logo_1024)
-  source = var.logo_1024
-}
-
-resource aws_s3_bucket_object "logo_svg" {
-  count  = var.logo_svg == "" ? 0 : 1
-  bucket = aws_s3_bucket.bucket.bucket
-  key    = basename(var.logo_svg)
-  source = var.logo_svg
 }
 
 ###########
@@ -83,9 +11,13 @@ resource aws_s3_bucket_object "logo_svg" {
 resource template_file "details" {
   template = file("${path.module}/templates/details.json")
   vars = {
-    logo_256  = var.logo_256 == "" ? "" : "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_256)}"
-    logo_1024 = var.logo_1024 == "" ? "" : "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_1024)}"
-    logo_svg  = var.logo_svg == "" ? "" : "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_svg)}"
+    //    logo_256  = var.logo_256 == "" ? "" : "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_256)}"
+    //    logo_1024 = var.logo_1024 == "" ? "" : "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_1024)}"
+    //    logo_svg  = var.logo_svg == "" ? "" : "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_svg)}"
+
+    logo_256  = var.logo_256 == "" ? "" : "http://${local.website_endpoint}/${basename(var.logo_256)}"
+    logo_1024 = var.logo_1024 == "" ? "" : "http://${local.website_endpoint}/${basename(var.logo_1024)}"
+    logo_svg  = var.logo_svg == "" ? "" : "http://${local.website_endpoint}/${basename(var.logo_svg)}"
 
     steemit  = var.steemit
     twitter  = var.twitter
@@ -114,7 +46,7 @@ resource "template_file" "registration" {
     email   = var.organization_email
     website = var.organization_website
 
-    details_endpoint = "http://${aws_s3_bucket.bucket.website_endpoint}/details.json"
+    details_endpoint = "http://${local.website_endpoint}/details.json"
 
     ip = local.ip
   }
@@ -131,24 +63,6 @@ resource template_file "preptools_config" {
   depends_on = [aws_s3_bucket.bucket]
 }
 
-#################
-# Persist objects
-#################
-resource "local_file" "preptools_config" {
-  filename = "${path.module}/preptools_config.json"
-  content  = template_file.preptools_config.rendered
-}
-
-resource "local_file" "registerPRep" {
-  filename = "${path.module}/registerPRep.json"
-  content  = template_file.registration.rendered
-}
-
-resource "aws_s3_bucket_object" "details" {
-  bucket  = aws_s3_bucket.bucket.bucket
-  key     = "details.json"
-  content = template_file.details.rendered
-}
 
 ###################
 # Register / Update
