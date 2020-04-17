@@ -75,12 +75,10 @@ No issue is creating limit on this module.
 
 | Name | Version |
 |------|---------|
-| aws | n/a |
 | google | n/a |
 | google-beta | n/a |
 | local | n/a |
 | null | n/a |
-| packet | n/a |
 | random | n/a |
 | template | n/a |
 
@@ -88,12 +86,12 @@ No issue is creating limit on this module.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
-| bucket | The name of the bucket to make | `string` | `""` | no |
+| bucket\_name | The bucket name for static content - blank for team name | `string` | `""` | no |
 | cloud\_provider | The cloud procider you are running on | `string` | `"aws"` | no |
-| environment | The environment | `string` | `""` | no |
+| environment | The environment | `string` | `"dev"` | no |
 | facebook | Link to social media account - https://... | `string` | `""` | no |
-| gcp\_project\_id | The name of the gcp project to create - required for cloud / content provider = gcp | `string` | `""` | no |
-| gcp\_project\_name | The display name of the gcp project to create - required for cloud / content provider = gcp | `string` | `""` | no |
+| gcp\_project\_id | The name of the gcp project to create - required for cloud / content provider = gcp | `string` | `"icon-testing"` | no |
+| gcp\_project\_name | The display name of the gcp project to create - required for cloud / content provider = gcp | `string` | `"icon-testing"` | no |
 | gcp\_website\_location | (Optional, Default: 'US') The GCS location | `string` | `"US"` | no |
 | gcp\_website\_storage\_class | The Storage Class of the new bucket. Supported values include: STANDARD, MULTI\_REGIONAL, REGIONAL, NEARLINE, COLDLINE | `string` | `"STANDARD"` | no |
 | github | Link to social media account - https://... | `string` | `""` | no |
@@ -103,20 +101,20 @@ No issue is creating limit on this module.
 | logo\_1024 | Path to png logo | `string` | `""` | no |
 | logo\_256 | Path to png logo | `string` | `""` | no |
 | logo\_svg | Path to svg logo | `string` | `""` | no |
-| namespace | The namespace to deploy into | `string` | `""` | no |
+| namespace | The namespace to deploy into | `string` | `"icon"` | no |
 | network\_name | mainnet or testnet - Don't mess this up!!!!!!!! | `string` | `"mainnet"` | no |
 | organization\_city | No qualifiers | `string` | `""` | no |
 | organization\_country | This needs to be three letter country code per https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3 | `string` | `""` | no |
 | organization\_email | Needs to be real email | `string` | `""` | no |
 | organization\_name | Any string - your team name | `string` | `""` | no |
 | organization\_website | Needs to begin in https / http - can be google... | `string` | `""` | no |
-| owner | Owner of the infrastructure | `string` | `""` | no |
+| owner | Owner of the infrastructure | `string` | `"insight"` | no |
 | packet\_project\_name | The project name for packet | `string` | `""` | no |
 | public\_ip | Optional if you are registering an IP from a different network - only creates details content, leave blank and insert cloud provdier to create ip | `string` | n/a | yes |
 | reddit | Link to social media account - https://... | `string` | `""` | no |
 | registration\_details\_endpoint | the endpoint with the details for registration - leave empty to default to cloud provider | `string` | `""` | no |
 | server\_type | Link to social media account - https://... | `string` | `"cloud"` | no |
-| stage | The stage of the deployment | `string` | `""` | no |
+| stage | The stage of the deployment | `string` | `"blue"` | no |
 | static\_content\_provider | The provider | `string` | `""` | no |
 | steemit | Link to social media account - https://... | `string` | `""` | no |
 | tags | Additional tags to include | `map(string)` | `{}` | no |
@@ -132,6 +130,7 @@ No issue is creating limit on this module.
 |------|-------------|
 | details\_endpoint | n/a |
 | details\_values | n/a |
+| name | n/a |
 | network\_name | n/a |
 | public\_ip | n/a |
 | registration\_command | n/a |

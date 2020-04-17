@@ -1,5 +1,5 @@
-data "aws_caller_identity" "this" {}
-data "aws_region" "this" {}
+//data "aws_caller_identity" "this" {}
+//data "aws_region" "this" {}
 
 terraform {
   required_version = ">= 0.12"
@@ -34,9 +34,9 @@ resource template_file "details" {
     //    logo_1024 = var.logo_1024 == "" ? "" : "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_1024)}"
     //    logo_svg  = var.logo_svg == "" ? "" : "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_svg)}"
 
-    logo_256  = var.logo_256 == "" ? "" : "http://${local.registration_details_endpoint}/${basename(var.logo_256)}"
-    logo_1024 = var.logo_1024 == "" ? "" : "http://${local.registration_details_endpoint}/${basename(var.logo_1024)}"
-    logo_svg  = var.logo_svg == "" ? "" : "http://${local.registration_details_endpoint}/${basename(var.logo_svg)}"
+    logo_256  = var.logo_256 == "" ? "" : "${local.static_endpoint}/${basename(var.logo_256)}"
+    logo_1024 = var.logo_1024 == "" ? "" : "${local.static_endpoint}/${basename(var.logo_1024)}"
+    logo_svg  = var.logo_svg == "" ? "" : "${local.static_endpoint}/${basename(var.logo_svg)}"
 
     steemit  = var.steemit
     twitter  = var.twitter
@@ -52,7 +52,7 @@ resource template_file "details" {
     region      = var.organization_city
     server_type = var.server_type
 
-    ip = local.public_ip
+    public_ip = local.public_ip
   }
 }
 
@@ -65,11 +65,11 @@ resource "template_file" "registration" {
     email   = var.organization_email
     website = var.organization_website
 
-    details_endpoint = "http://${local.registration_details_endpoint}/details.json"
+    details_endpoint = local.registration_details_endpoint
 
-    ip = local.public_ip
+    public_ip = local.public_ip
   }
-  depends_on = [aws_s3_bucket.this]
+  //  depends_on = [aws_s3_bucket.this]
 }
 
 resource template_file "preptools_config" {
@@ -79,32 +79,20 @@ resource template_file "preptools_config" {
     url           = local.url
     keystore_path = var.keystore_path
   }
-  depends_on = [aws_s3_bucket.this]
+  //  depends_on = [aws_s3_bucket.this]
 }
 
 #################
 # Persist objects
 #################
 resource "local_file" "preptools_config" {
-  count = local.static_content_provider == "aws" ? 1 : 0
-
   filename = "${path.module}/preptools_config.json"
   content  = template_file.preptools_config.rendered
 }
 
 resource "local_file" "registerPRep" {
-  count = local.static_content_provider == "aws" ? 1 : 0
-
   filename = "${path.module}/registerPRep.json"
   content  = template_file.registration.rendered
-}
-
-resource "aws_s3_bucket_object" "details" {
-  count = local.static_content_provider == "aws" ? 1 : 0
-
-  bucket  = join("", aws_s3_bucket.this.*.bucket)
-  key     = "details.json"
-  content = template_file.details.rendered
 }
 
 ###################
@@ -114,13 +102,11 @@ resource "aws_s3_bucket_object" "details" {
 resource null_resource "preptools" {
   provisioner "local-exec" {
     command = <<-EOF
-python ${path.module}/scripts/preptools_wrapper.py ${var.network_name} ${var.keystore_path} ${path.module}/registerPRep.json ${var.keystore_password}
+python ${path.module}/scripts/preptools_wrapper.py ${var.network_name} ${var.keystore_path} ${local_file.registerPRep.filename} ${var.keystore_password}
 EOF
   }
   triggers = {
     build_always = timestamp()
   }
-
-  depends_on = [aws_s3_bucket_object.details, local_file.preptools_config, local_file.registerPRep]
 }
 

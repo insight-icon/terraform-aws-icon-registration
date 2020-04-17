@@ -4,25 +4,37 @@ variable "static_content_provider" {
   default     = ""
 }
 
+variable "bucket_name" {
+  description = "The bucket name for static content - blank for team name"
+  type        = string
+  default     = ""
+}
+
+variable "tags" {
+  description = "Additional tags to include"
+  type        = map(string)
+  default     = {}
+}
+
 ########
 # Label
 ########
 variable "environment" {
   description = "The environment"
   type        = string
-  default     = ""
+  default     = "dev"
 }
 
 variable "namespace" {
   description = "The namespace to deploy into"
   type        = string
-  default     = ""
+  default     = "icon"
 }
 
 variable "stage" {
   description = "The stage of the deployment"
   type        = string
-  default     = ""
+  default     = "blue"
 }
 
 variable "network_name" {
@@ -34,23 +46,12 @@ variable "network_name" {
 variable "owner" {
   description = "Owner of the infrastructure"
   type        = string
-  default     = ""
+  default     = "insight"
 }
 
 
 
-variable "bucket" {
-  description = "The name of the bucket to make"
-  type        = string
-  default     = ""
-}
 
-
-variable "tags" {
-  description = "Additional tags to include"
-  type        = map(string)
-  default     = {}
-}
 
 // ------------------Registration
 
@@ -148,12 +149,6 @@ variable "server_type" {
   default     = "cloud"
 }
 
-//variable "region" {
-//  description = "The region you are running your server - no constraints"
-//  type        = string
-//  default     = ""
-//}
-
 variable "public_ip" {
   description = "Optional if you are registering an IP from a different network - only creates details content, leave blank and insert cloud provdier to create ip"
   type        = string
@@ -171,3 +166,4 @@ variable "keystore_password" {
   description = "The keystore password"
   type        = string
 }
+

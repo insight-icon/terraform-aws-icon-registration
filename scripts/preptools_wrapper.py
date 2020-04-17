@@ -3,9 +3,9 @@ import requests
 import json
 import codecs
 import subprocess
-import sys
-from pprint import pprint
-
+# import sys
+# from pprint import pprint
+# from subprocess import run, PIPE
 
 class PRepChecker(object):
 
@@ -15,14 +15,16 @@ class PRepChecker(object):
             return ValueError('Need to specify network_name -> either mainnet or testnet')
         if network_name == 'mainnet':
             url = "https://ctz.solidwallet.io/api/v3"
+            nid = 1
         elif network_name == 'testnet':
             url = "https://zicon.net.solidwallet.io/api/v3"
+            nid = 80
         else:
             return ValueError('Need to specify network_name -> either mainnet or testnet')
-        return url
+        return url, nid
 
     def _get_preps(self, network_name):
-        url = self._get_url(network_name)
+        url, nid = self._get_url(network_name)
         payload = {
             "jsonrpc": "2.0",
             "id": 1234,
@@ -58,6 +60,7 @@ class PRepChecker(object):
         return exists
 
     def prep_reg(self, network_name, keystore, register_json, password):
+        url, nid = self._get_url(network_name)
 
         address = json.load(codecs.open(keystore, 'r', 'utf-8-sig'))['address']
         print(address)
@@ -67,12 +70,33 @@ class PRepChecker(object):
 
         if not self.check_if_exists(network_name, address, p2p_endpoint):
             print("registering")
-            command = 'echo "Y" | preptools registerPRep --prep-json %s -k %s -p %s' % (register_json, keystore, password)
+            command = 'yes | preptools registerPRep --prep-json %s -k %s -p %s -u %s -n %i' % (register_json, keystore, password, url, nid)
         else:
             print("updating")
-            command = 'echo "Y" | preptools setPRep --prep-json %s -k %s -p %s' % (register_json, keystore, password)
+            command = 'yes | preptools setPRep --prep-json %s -k %s -p %s -u %s -n %i' % (register_json, keystore, password, url, nid)
 
-        subprocess.call(command, shell=True, stdout=subprocess.PIPE)
+        print(command)
+
+        # subprocess.call(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # # result = run(command.split(" "), stdout=PIPE, stderr=PIPE, universal_newlines=True)
+        # # print(result.returncode, result.stdout, result.stderr)
+        p = subprocess.Popen(command, shell=True, stderr=subprocess.PIPE)
+        (output, err) = p.communicate()
+        print(output)
+        print(err)
+        #
+        # ## Wait for date to terminate. Get return returncode ##
+        # p_status = p.wait()
+        # print("Command output : " + str(err))
+        # print("Command exit status/return code : " + p_status)
+        # while True:
+        #     out = p.stderr.read(1)
+        #     if out == '' and p.poll() != None:
+        #         break
+        #     if out != '':
+        #         sys.stdout.write(str(out))
+        #         sys.stdout.flush()
 
 
 if __name__ == "__main__":

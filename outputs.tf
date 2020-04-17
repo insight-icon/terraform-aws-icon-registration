@@ -1,5 +1,9 @@
+output "public_ip" {
+  value = local.public_ip
+}
+
 output "details_endpoint" {
-  value = "http://${local.registration_details_endpoint}/details.json"
+  value = local.registration_details_endpoint
 }
 
 output "details_values" {
@@ -8,18 +12,6 @@ output "details_values" {
 
 output "registration_json" {
   value = template_file.registration.rendered
-}
-
-//output "ip" {
-//  value = var.ip == null ? join("", aws_eip.this.*.public_ip) : var.ip
-//}
-//
-//output "public_ip" {
-//  value = var.ip == null ? join("", aws_eip.this.*.public_ip) : var.ip
-//}
-
-output "public_ip" {
-  value = local.public_ip
 }
 
 output "network_name" {
@@ -37,7 +29,7 @@ preptools registerPRep \
 %{if var.organization_city != ""}--city "${var.organization_city}"%{endif} \
 %{if var.organization_email != ""}--email "${var.organization_email}"%{endif} \
 %{if var.organization_website != ""}--website "${var.organization_website}"%{endif} \
---details "http://${local.registration_details_endpoint}/details.json" \
+--details "${local.registration_details_endpoint}" \
 --p2p-endpoint "${local.public_ip}:7100"
 EOF
 }
