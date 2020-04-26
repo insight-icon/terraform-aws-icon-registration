@@ -1,5 +1,4 @@
-//data "aws_caller_identity" "this" {}
-//data "aws_region" "this" {}
+data "aws_region" "this" {}
 
 terraform {
   required_version = ">= 0.12"
@@ -7,6 +6,12 @@ terraform {
 
 resource "random_pet" "this" {
   length = 2
+}
+
+locals {
+  tags            = merge(var.tags, { "Name" = "${var.network_name}-ip" })
+  bucket_name     = var.bucket_name == "" ? replace(lower(var.organization_name), "/[_\\s]", "-") : var.bucket_name
+  static_endpoint = var.details_endpoint == "" ? "https://${join("", aws_s3_bucket.this.*.website_endpoint)}/details.json" : var.details_endpoint
 }
 
 module "label" {
@@ -21,92 +26,38 @@ module "label" {
 
   environment = var.environment
   namespace   = var.namespace
-  stage       = var.stage
 }
 
-###########
-# Templates
-###########
-resource template_file "details" {
-  template = file("${path.module}/templates/details.json")
-  vars = {
-    //    logo_256  = var.logo_256 == "" ? "" : "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_256)}"
-    //    logo_1024 = var.logo_1024 == "" ? "" : "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_1024)}"
-    //    logo_svg  = var.logo_svg == "" ? "" : "http://${aws_s3_bucket.bucket.website_endpoint}/${basename(var.logo_svg)}"
+module "registration" {
+  source = "github.com/insight-icon/terraform-icon-registration.git?ref=master"
 
-    logo_256  = var.logo_256 == "" ? "" : "${local.static_endpoint}/${basename(var.logo_256)}"
-    logo_1024 = var.logo_1024 == "" ? "" : "${local.static_endpoint}/${basename(var.logo_1024)}"
-    logo_svg  = var.logo_svg == "" ? "" : "${local.static_endpoint}/${basename(var.logo_svg)}"
+  public_ip       = var.public_ip == "" ? join("", aws_eip.this.*.public_ip) : var.public_ip
+  static_endpoint = local.static_endpoint
+  network_name    = var.network_name
 
-    steemit  = var.steemit
-    twitter  = var.twitter
-    youtube  = var.youtube
-    facebook = var.facebook
-    github   = var.github
-    reddit   = var.reddit
-    keybase  = var.keybase
-    telegram = var.telegram
-    wechat   = var.wechat
+  keystore_path     = var.keystore_path
+  keystore_password = var.keystore_password
 
-    country     = var.organization_country
-    region      = var.organization_city
-    server_type = var.server_type
+  organization_name    = var.organization_name
+  organization_country = var.organization_country
+  organization_email   = var.organization_email
+  organization_city    = var.organization_city
+  organization_website = var.organization_website
 
-    public_ip = local.public_ip
-  }
-}
+  logo_256  = var.logo_256
+  logo_1024 = var.logo_1024
+  logo_svg  = var.logo_svg
 
-resource "template_file" "registration" {
-  template = file("${path.module}/templates/registerPRep.json")
-  vars = {
-    name    = var.organization_name
-    country = var.organization_country
-    city    = var.organization_city
-    email   = var.organization_email
-    website = var.organization_website
+  steemit  = var.steemit
+  twitter  = var.twitter
+  youtube  = var.youtube
+  facebook = var.facebook
+  github   = var.github
+  reddit   = var.reddit
+  keybase  = var.keybase
+  telegram = var.telegram
+  wechat   = var.wechat
 
-    details_endpoint = local.registration_details_endpoint
-
-    public_ip = local.public_ip
-  }
-  //  depends_on = [aws_s3_bucket.this]
-}
-
-resource template_file "preptools_config" {
-  template = file("${path.module}/templates/preptools_config.json")
-  vars = {
-    nid           = local.nid
-    url           = local.url
-    keystore_path = var.keystore_path
-  }
-  //  depends_on = [aws_s3_bucket.this]
-}
-
-#################
-# Persist objects
-#################
-resource "local_file" "preptools_config" {
-  filename = "${path.module}/preptools_config.json"
-  content  = template_file.preptools_config.rendered
-}
-
-resource "local_file" "registerPRep" {
-  filename = "${path.module}/registerPRep.json"
-  content  = template_file.registration.rendered
-}
-
-###################
-# Register / Update
-###################
-
-resource null_resource "preptools" {
-  provisioner "local-exec" {
-    command = <<-EOF
-python ${path.module}/scripts/preptools_wrapper.py ${var.network_name} ${var.keystore_path} ${local_file.registerPRep.filename} ${var.keystore_password}
-EOF
-  }
-  triggers = {
-    build_always = timestamp()
-  }
+  server_type = var.server_type
 }
 

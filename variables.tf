@@ -1,5 +1,22 @@
-variable "static_content_provider" {
-  description = "The provider "
+
+variable "public_ip" {
+  description = "Optional if you are registering an IP from a different network - only creates details content, leave blank and insert cloud provdier to create ip"
+  type        = string
+  default     = ""
+}
+
+variable "keystore_path" {
+  description = "the path to your keystore"
+  type        = string
+}
+
+variable "keystore_password" {
+  description = "The keystore password"
+  type        = string
+}
+
+variable "details_endpoint" {
+  description = "The endpoint to find details.json - blank to create"
   type        = string
   default     = ""
 }
@@ -49,12 +66,9 @@ variable "owner" {
   default     = "insight"
 }
 
-
-
-
-
-// ------------------Registration
-
+##############
+# Registration
+##############
 variable "organization_name" {
   description = "Any string - your team name"
   type        = string
@@ -81,8 +95,9 @@ variable "organization_website" {
   default     = ""
 }
 
-// ------------------Details
-
+#########
+# Details
+#########
 variable "logo_256" {
   description = "Path to png logo"
   type        = string
@@ -147,23 +162,5 @@ variable "server_type" {
   description = "Link to social media account - https://..."
   type        = string
   default     = "cloud"
-}
-
-variable "public_ip" {
-  description = "Optional if you are registering an IP from a different network - only creates details content, leave blank and insert cloud provdier to create ip"
-  type        = string
-  default     = null
-}
-
-//------------------
-
-variable "keystore_path" {
-  description = "the path to your keystore"
-  type        = string
-}
-
-variable "keystore_password" {
-  description = "The keystore password"
-  type        = string
 }
 

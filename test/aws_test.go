@@ -12,7 +12,7 @@ import (
 func TestAws(t *testing.T) {
 	t.Parallel()
 
-	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/defaults")
+	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/aws")
 
 	cwd, err := os.Getwd()
 	if err != nil {

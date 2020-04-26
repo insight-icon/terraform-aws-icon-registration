@@ -31,9 +31,6 @@ module "defaults" {
 
   network_name = "testnet"
 
-  // Path needs to be filled in otherwise registration doesn't work
-  //  keystore_path = "/Users/.../Documents/keystore"
-
   organization_name    = "Insight-CI"
   organization_country = "USA"
   # This needs to be three letter country code per https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
@@ -54,7 +51,7 @@ module "defaults" {
   //  ip = "1.2.3.4"
   // ------------------Details - Doesn't really matter
   server_type = "cloud"
-  region      = "us-east-1"
+  //  region      = "us-east-1"
 
   keystore_password = var.keystore_password
   keystore_path     = local.keystore_path

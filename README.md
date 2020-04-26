@@ -75,25 +75,17 @@ No issue is creating limit on this module.
 
 | Name | Version |
 |------|---------|
-| google | n/a |
-| google-beta | n/a |
-| local | n/a |
-| null | n/a |
+| aws | n/a |
 | random | n/a |
-| template | n/a |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
 | bucket\_name | The bucket name for static content - blank for team name | `string` | `""` | no |
-| cloud\_provider | The cloud procider you are running on | `string` | `"aws"` | no |
+| details\_endpoint | The endpoint to find details.json - blank to create | `string` | `""` | no |
 | environment | The environment | `string` | `"dev"` | no |
 | facebook | Link to social media account - https://... | `string` | `""` | no |
-| gcp\_project\_id | The name of the gcp project to create - required for cloud / content provider = gcp | `string` | `"icon-testing"` | no |
-| gcp\_project\_name | The display name of the gcp project to create - required for cloud / content provider = gcp | `string` | `"icon-testing"` | no |
-| gcp\_website\_location | (Optional, Default: 'US') The GCS location | `string` | `"US"` | no |
-| gcp\_website\_storage\_class | The Storage Class of the new bucket. Supported values include: STANDARD, MULTI\_REGIONAL, REGIONAL, NEARLINE, COLDLINE | `string` | `"STANDARD"` | no |
 | github | Link to social media account - https://... | `string` | `""` | no |
 | keybase | Link to social media account - https://... | `string` | `""` | no |
 | keystore\_password | The keystore password | `string` | n/a | yes |
@@ -109,18 +101,14 @@ No issue is creating limit on this module.
 | organization\_name | Any string - your team name | `string` | `""` | no |
 | organization\_website | Needs to begin in https / http - can be google... | `string` | `""` | no |
 | owner | Owner of the infrastructure | `string` | `"insight"` | no |
-| packet\_project\_name | The project name for packet | `string` | `""` | no |
-| public\_ip | Optional if you are registering an IP from a different network - only creates details content, leave blank and insert cloud provdier to create ip | `string` | n/a | yes |
+| public\_ip | Optional if you are registering an IP from a different network - only creates details content, leave blank and insert cloud provdier to create ip | `string` | `""` | no |
 | reddit | Link to social media account - https://... | `string` | `""` | no |
-| registration\_details\_endpoint | the endpoint with the details for registration - leave empty to default to cloud provider | `string` | `""` | no |
 | server\_type | Link to social media account - https://... | `string` | `"cloud"` | no |
 | stage | The stage of the deployment | `string` | `"blue"` | no |
-| static\_content\_provider | The provider | `string` | `""` | no |
 | steemit | Link to social media account - https://... | `string` | `""` | no |
 | tags | Additional tags to include | `map(string)` | `{}` | no |
 | telegram | Link to social media account - https://... | `string` | `""` | no |
 | twitter | Link to social media account - https://... | `string` | `""` | no |
-| website\_endpoint | Endpoint you keep your details on - empty to create | `string` | `""` | no |
 | wechat | Link to social media account - https://... | `string` | `""` | no |
 | youtube | Link to social media account - https://... | `string` | `""` | no |
 
@@ -128,9 +116,8 @@ No issue is creating limit on this module.
 
 | Name | Description |
 |------|-------------|
+| details\_content | n/a |
 | details\_endpoint | n/a |
-| details\_values | n/a |
-| name | n/a |
 | network\_name | n/a |
 | public\_ip | n/a |
 | registration\_command | n/a |

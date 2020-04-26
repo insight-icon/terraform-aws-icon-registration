@@ -1,8 +1,7 @@
-
 resource "aws_eip" "this" {
-  count = var.public_ip == "" ? 1 : 0
+  count = var.create
   vpc   = true
-  tags  = local.tags
+  tags  = var.tags
 
   lifecycle {
     prevent_destroy = false
@@ -10,9 +9,9 @@ resource "aws_eip" "this" {
 }
 
 resource "aws_s3_bucket" "this" {
-  count = var.details_endpoint == "" ? 1 : 0
+  count = var.create
 
-  bucket = local.bucket_name
+  bucket = var.bucket_name
   acl    = "public-read"
 
   website {
@@ -30,7 +29,7 @@ resource "aws_s3_bucket" "this" {
         "s3:GetObject"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${local.bucket_name}/*",
+      "Resource": "arn:aws:s3:::${var.bucket_name}/*",
       "Principal": "*"
     }
   ]
@@ -42,30 +41,35 @@ EOF
 # Images
 ########
 resource "aws_s3_bucket_object" "logo_256" {
-  count  = var.logo_256 != "" && var.details_endpoint == "" ? 1 : 0
+  count = var.create
+  //  count  = var.logo_256 != "" && local.static_content_provider == "aws" ? 1 : 0
   bucket = join("", aws_s3_bucket.this.*.bucket)
   key    = basename(var.logo_256)
   source = var.logo_256
 }
 
 resource "aws_s3_bucket_object" "logo_1024" {
-  count  = var.logo_1024 != "" && var.details_endpoint == "" ? 1 : 0
+  count = var.create
+  //  count  = var.logo_1024 != "" && local.static_content_provider == "aws" ? 1 : 0
   bucket = join("", aws_s3_bucket.this.*.bucket)
   key    = basename(var.logo_1024)
   source = var.logo_1024
 }
 
 resource aws_s3_bucket_object "logo_svg" {
-  count  = var.logo_svg != "" && var.details_endpoint == "" ? 1 : 0
+  count = var.create
+  //  count  = var.logo_svg != "" && local.static_content_provider == "aws" ? 1 : 0
   bucket = join("", aws_s3_bucket.this.*.bucket)
   key    = basename(var.logo_svg)
   source = var.logo_svg
 }
 
 resource "aws_s3_bucket_object" "details" {
-  count = var.details_endpoint == "" ? 1 : 0
+  count = var.create
+
+  //  count = local.static_content_provider == "aws" ? 1 : 0
 
   bucket  = join("", aws_s3_bucket.this.*.bucket)
   key     = "details.json"
-  content = module.registration.details_content
+  content = var.details_content
 }
