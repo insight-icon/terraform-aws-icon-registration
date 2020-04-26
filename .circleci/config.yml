@@ -4,11 +4,10 @@ jobs:
       - image: insightinfrastructure/icon-ci:v0.2.0
     steps:
       - checkout
+      - run: pip3 install -r requirements.txt
       - run: |
           make test
-orbs:
-  go: circleci/go@0.2.0
-  node: circleci/node@1.1.6
+
 version: 2.1
 workflows:
   default:
