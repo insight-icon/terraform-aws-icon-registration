@@ -1,3 +1,8 @@
+variable "skip_registration" {
+  description = "Boolean to skip executing registration command"
+  type        = bool
+  default     = false
+}
 
 variable "public_ip" {
   description = "Optional if you are registering an IP from a different network - only creates details content, leave blank and insert cloud provdier to create ip"

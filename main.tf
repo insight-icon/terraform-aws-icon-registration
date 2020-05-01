@@ -31,6 +31,8 @@ module "label" {
 module "registration" {
   source = "github.com/insight-icon/terraform-icon-registration.git?ref=master"
 
+  skip_registration = var.skip_registration
+
   public_ip       = var.public_ip == "" ? join("", aws_eip.this.*.public_ip) : var.public_ip
   static_endpoint = local.static_endpoint
   network_name    = var.network_name

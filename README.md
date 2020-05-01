@@ -104,6 +104,7 @@ No issue is creating limit on this module.
 | public\_ip | Optional if you are registering an IP from a different network - only creates details content, leave blank and insert cloud provdier to create ip | `string` | `""` | no |
 | reddit | Link to social media account - https://... | `string` | `""` | no |
 | server\_type | Link to social media account - https://... | `string` | `"cloud"` | no |
+| skip\_registration | Boolean to skip executing registration command | `bool` | `false` | no |
 | stage | The stage of the deployment | `string` | `"blue"` | no |
 | steemit | Link to social media account - https://... | `string` | `""` | no |
 | tags | Additional tags to include | `map(string)` | `{}` | no |
