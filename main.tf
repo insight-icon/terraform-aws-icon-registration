@@ -14,20 +14,6 @@ locals {
   static_endpoint = var.details_endpoint == "" ? "https://${join("", aws_s3_bucket.this.*.website_endpoint)}/details.json" : var.details_endpoint
 }
 
-module "label" {
-  source = "github.com/robc-io/terraform-null-label.git?ref=0.16.1"
-
-  tags = {
-    NetworkName = var.network_name
-    Owner       = var.owner
-    Terraform   = true
-    VpcType     = "main"
-  }
-
-  environment = var.environment
-  namespace   = var.namespace
-}
-
 module "registration" {
   source = "github.com/insight-icon/terraform-icon-registration.git?ref=master"
 

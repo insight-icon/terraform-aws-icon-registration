@@ -2,7 +2,7 @@
 resource "aws_eip" "this" {
   count = var.public_ip == "" ? 1 : 0
   vpc   = true
-  tags  = local.tags
+  tags  = merge({ name = var.organization_name }, local.tags)
 
   lifecycle {
     prevent_destroy = false
