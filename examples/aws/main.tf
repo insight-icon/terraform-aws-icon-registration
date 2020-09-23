@@ -29,7 +29,7 @@ locals {
 module "defaults" {
   source = "../.."
 
-  network_name = "testnet"
+  network_name = "zicon"
 
   organization_name    = "Insight-CI"
   organization_country = "USA"

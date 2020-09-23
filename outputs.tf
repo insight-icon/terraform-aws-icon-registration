@@ -18,14 +18,6 @@ output "network_name" {
   value = var.network_name
 }
 
-output "registration_command" {
-  value = module.registration.registration_command
-}
-
-output "update_registration_command" {
-  value = module.registration.update_registration_command
-}
-
 output "operator_wallet_path" {
   value = module.registration.operator_wallet_path
 }

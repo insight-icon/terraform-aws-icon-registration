@@ -122,9 +122,7 @@ No issue is creating limit on this module.
 | operator\_password | n/a |
 | operator\_wallet\_path | n/a |
 | public\_ip | n/a |
-| registration\_command | n/a |
 | registration\_json | n/a |
-| update\_registration\_command | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
