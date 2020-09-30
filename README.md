@@ -84,7 +84,6 @@ No issue is creating limit on this module.
 |------|-------------|------|---------|:-----:|
 | bucket\_name | The bucket name for static content - blank for team name | `string` | `""` | no |
 | details\_endpoint | The endpoint to find details.json - blank to create | `string` | `""` | no |
-| environment | The environment | `string` | `"dev"` | no |
 | facebook | Link to social media account - https://... | `string` | `""` | no |
 | github | Link to social media account - https://... | `string` | `""` | no |
 | keybase | Link to social media account - https://... | `string` | `""` | no |
@@ -93,8 +92,9 @@ No issue is creating limit on this module.
 | logo\_1024 | Path to png logo | `string` | `""` | no |
 | logo\_256 | Path to png logo | `string` | `""` | no |
 | logo\_svg | Path to svg logo | `string` | `""` | no |
-| namespace | The namespace to deploy into | `string` | `"icon"` | no |
 | network\_name | mainnet or testnet - Don't mess this up!!!!!!!! | `string` | `"mainnet"` | no |
+| operator\_keystore\_password | The password to your operator keystore - blank to create random | `string` | `""` | no |
+| operator\_keystore\_path | The path to your operator keystore - blank to create <keystore-path>-operator | `string` | `""` | no |
 | organization\_city | No qualifiers | `string` | `""` | no |
 | organization\_country | This needs to be three letter country code per https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3 | `string` | `""` | no |
 | organization\_email | Needs to be real email | `string` | `""` | no |
@@ -104,7 +104,6 @@ No issue is creating limit on this module.
 | public\_ip | Optional if you are registering an IP from a different network - only creates details content, leave blank and insert cloud provdier to create ip | `string` | `""` | no |
 | reddit | Link to social media account - https://... | `string` | `""` | no |
 | server\_type | Link to social media account - https://... | `string` | `"cloud"` | no |
-| stage | The stage of the deployment | `string` | `"blue"` | no |
 | steemit | Link to social media account - https://... | `string` | `""` | no |
 | tags | Additional tags to include | `map(string)` | `{}` | no |
 | telegram | Link to social media account - https://... | `string` | `""` | no |

@@ -15,6 +15,18 @@ variable "keystore_password" {
   type        = string
 }
 
+variable "operator_keystore_path" {
+  description = "The path to your operator keystore - blank to create <keystore-path>-operator"
+  type        = string
+  default     = ""
+}
+
+variable "operator_keystore_password" {
+  description = "The password to your operator keystore - blank to create random"
+  type        = string
+  default     = ""
+}
+
 variable "details_endpoint" {
   description = "The endpoint to find details.json - blank to create"
   type        = string
@@ -36,23 +48,17 @@ variable "tags" {
 ########
 # Label
 ########
-variable "environment" {
-  description = "The environment"
-  type        = string
-  default     = "dev"
-}
-
-variable "namespace" {
-  description = "The namespace to deploy into"
-  type        = string
-  default     = "icon"
-}
-
-variable "stage" {
-  description = "The stage of the deployment"
-  type        = string
-  default     = "blue"
-}
+//variable "environment" {
+//  description = "The environment"
+//  type        = string
+//  default     = "dev"
+//}
+//
+//variable "namespace" {
+//  description = "The namespace to deploy into"
+//  type        = string
+//  default     = "icon"
+//}
 
 variable "network_name" {
   description = "mainnet or testnet - Don't mess this up!!!!!!!!"

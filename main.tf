@@ -24,6 +24,9 @@ module "registration" {
   keystore_path     = var.keystore_path
   keystore_password = var.keystore_password
 
+  operator_keystore_path     = var.operator_keystore_path
+  operator_keystore_password = var.operator_keystore_password
+
   organization_name    = var.organization_name
   organization_country = var.organization_country
   organization_email   = var.organization_email
