@@ -23,6 +23,6 @@ output "operator_wallet_path" {
 }
 
 output "operator_password" {
-  value     = module.registration.operator_password
-  sensitive = true
+  value = module.registration.operator_password
+  //  sensitive = true
 }
