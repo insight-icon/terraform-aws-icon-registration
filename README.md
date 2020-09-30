@@ -118,10 +118,12 @@ No issue is creating limit on this module.
 | details\_content | n/a |
 | details\_endpoint | n/a |
 | network\_name | n/a |
+| nid | n/a |
 | operator\_password | n/a |
 | operator\_wallet\_path | n/a |
 | public\_ip | n/a |
 | registration\_json | n/a |
+| url | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

@@ -26,3 +26,11 @@ output "operator_password" {
   value = module.registration.operator_password
   //  sensitive = true
 }
+
+output "url" {
+  value = module.registration.url
+}
+
+output "nid" {
+  value = module.registration.nid
+}
