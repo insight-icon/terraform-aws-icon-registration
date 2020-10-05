@@ -7,7 +7,7 @@ terraform {
 locals {
   tags            = merge(var.tags, { "Name" = "${var.network_name}-ip" })
   bucket_name     = var.bucket_name == "" ? replace(lower(var.organization_name), "/[_\\s]", "-") : var.bucket_name
-  static_endpoint = var.details_endpoint == "" ? "https://${join("", aws_s3_bucket.this.*.website_endpoint)}/details.json" : var.details_endpoint
+  static_endpoint = var.details_endpoint == "" ? "https://${join("", aws_s3_bucket.this.*.website_endpoint)}" : var.details_endpoint
 }
 
 module "registration" {
