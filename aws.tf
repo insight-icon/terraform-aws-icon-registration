@@ -5,7 +5,7 @@ resource "aws_eip" "this" {
   tags  = merge({ name = var.organization_name }, local.tags)
 
   lifecycle {
-    prevent_destroy = false
+    prevent_destroy = true
   }
 }
 
