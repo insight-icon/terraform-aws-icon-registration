@@ -4,10 +4,6 @@ terraform {
   required_version = ">= 0.12"
 }
 
-resource "random_pet" "this" {
-  length = 2
-}
-
 locals {
   tags            = merge(var.tags, { "Name" = "${var.network_name}-ip" })
   bucket_name     = var.bucket_name == "" ? replace(lower(var.organization_name), "/[_\\s]", "-") : var.bucket_name

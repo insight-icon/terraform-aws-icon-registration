@@ -76,7 +76,6 @@ No issue is creating limit on this module.
 | Name | Version |
 |------|---------|
 | aws | n/a |
-| random | n/a |
 
 ## Inputs
 
