@@ -19,11 +19,11 @@ output "network_name" {
 }
 
 output "operator_wallet_path" {
-  value = module.registration.operator_wallet_path
+  value = module.registration.operator_keystore_path
 }
 
 output "operator_password" {
-  value = module.registration.operator_password
+  value = module.registration.operator_keystore_password
   //  sensitive = true
 }
 
