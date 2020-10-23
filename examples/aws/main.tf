@@ -29,6 +29,9 @@ locals {
 module "defaults" {
   source = "../.."
 
+  //  Not for prod
+  enable_testing = true
+
   network_name = "zicon"
 
   organization_name    = "Insight-CI"

@@ -1,6 +1,21 @@
+variable "enable_testing" {
+  description = "Bool for testing for lifecycle policies"
+  type        = bool
+  default     = false
+}
 
-resource "aws_eip" "this" {
-  count = var.public_ip == "" ? 1 : 0
+resource "aws_eip" "testing" {
+  count = var.public_ip == "" && var.enable_testing ? 1 : 0
+  vpc   = true
+  tags  = merge({ name = var.organization_name }, local.tags)
+
+  lifecycle {
+    prevent_destroy = false
+  }
+}
+
+resource "aws_eip" "main" {
+  count = var.public_ip == "" && ! var.enable_testing ? 1 : 0
   vpc   = true
   tags  = merge({ name = var.organization_name }, local.tags)
 
@@ -8,6 +23,7 @@ resource "aws_eip" "this" {
     prevent_destroy = true
   }
 }
+
 
 resource "aws_s3_bucket" "this" {
   count = var.details_endpoint == "" ? 1 : 0

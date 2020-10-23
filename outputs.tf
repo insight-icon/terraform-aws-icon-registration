@@ -1,5 +1,5 @@
 output "public_ip" {
-  value = var.public_ip == "" ? join("", aws_eip.this.*.public_ip) : var.public_ip
+  value = var.public_ip == "" ? local.public_ip_created : var.public_ip
 }
 
 output "details_endpoint" {

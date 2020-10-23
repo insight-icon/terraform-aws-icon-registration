@@ -83,6 +83,7 @@ No issue is creating limit on this module.
 |------|-------------|------|---------|:-----:|
 | bucket\_name | The bucket name for static content - blank for team name | `string` | `""` | no |
 | details\_endpoint | The endpoint to find details.json - blank to create | `string` | `""` | no |
+| enable\_testing | Bool for testing for lifecycle policies | `bool` | `false` | no |
 | facebook | Link to social media account - https://... | `string` | `""` | no |
 | github | Link to social media account - https://... | `string` | `""` | no |
 | keybase | Link to social media account - https://... | `string` | `""` | no |

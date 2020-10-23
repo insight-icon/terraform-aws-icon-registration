@@ -5,18 +5,17 @@ terraform {
 }
 
 locals {
-  tags        = merge(var.tags, { "Name" = "${var.network_name}-ip" })
-  bucket_name = var.bucket_name == "" ? replace(lower(var.organization_name), "/[_\\s]", "-") : var.bucket_name
-  //  static_endpoint = var.details_endpoint == "" ? "https://${join("", aws_s3_bucket.this.*.website_endpoint)}" : var.details_endpoint
+  tags            = merge(var.tags, { "Name" = "${var.network_name}-ip" })
+  bucket_name     = var.bucket_name == "" ? replace(lower(var.organization_name), "/[_\\s]", "-") : var.bucket_name
   static_endpoint = var.details_endpoint == "" ? "https://${local.bucket_name}.s3-${data.aws_region.this.name}.amazonaws.com" : var.details_endpoint
-  //  https://.s3-website-us-west-2.amazonaws.com/details.json
 
+  public_ip_created = join("", compact(concat(aws_eip.testing.*.public_ip, aws_eip.main.*.public_ip)))
 }
 
 module "registration" {
   source = "github.com/insight-icon/terraform-icon-registration.git?ref=master"
 
-  public_ip       = var.public_ip == "" ? join("", aws_eip.this.*.public_ip) : var.public_ip
+  public_ip       = var.public_ip == "" ? local.public_ip_created : var.public_ip
   static_endpoint = local.static_endpoint
   network_name    = var.network_name
 
