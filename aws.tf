@@ -7,7 +7,7 @@ variable "enable_testing" {
 resource "aws_eip" "testing" {
   count = var.public_ip == "" && var.enable_testing ? 1 : 0
   vpc   = true
-  tags  = merge({ name = var.organization_name }, local.tags)
+  tags  = merge({ Name = "${var.organization_name}-${var.network_name}" }, local.tags)
 
   lifecycle {
     prevent_destroy = false
