@@ -26,9 +26,14 @@ locals {
   logo_svg      = var.logo_svg == "" ? "${path.cwd}/../../test/fixtures/logos/insight.png" : var.logo_svg
 }
 
+resource "random_pet" "this" {
+  length = 2
+}
+
 module "defaults" {
   source = "../.."
 
+  bucket_name = "insight-ci-${random_pet.this.id}"
   //  Not for prod
   enable_testing = true
 

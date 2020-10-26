@@ -5,7 +5,6 @@ terraform {
 }
 
 locals {
-  tags            = merge(var.tags, { "Name" = "${var.network_name}-ip" })
   bucket_name     = var.bucket_name == "" ? replace(lower(var.organization_name), "/[_\\s]", "-") : var.bucket_name
   static_endpoint = var.details_endpoint == "" ? "https://${local.bucket_name}.s3-${data.aws_region.this.name}.amazonaws.com" : var.details_endpoint
 
