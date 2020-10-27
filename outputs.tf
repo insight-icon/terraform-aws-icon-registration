@@ -18,11 +18,11 @@ output "network_name" {
   value = var.network_name
 }
 
-output "operator_wallet_path" {
+output "operator_keystore_path" {
   value = module.registration.operator_keystore_path
 }
 
-output "operator_password" {
+output "operator_keystore_password" {
   value = module.registration.operator_keystore_password
   //  sensitive = true
 }
